@@ -15,13 +15,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -63,76 +66,90 @@ fun RegisterPage(modifier: Modifier = Modifier) {
 
     val activity = LocalActivity.current as Activity
 
-    Column(
-        modifier = modifier.padding(24.dp).fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Surface(
     ) {
-        val fieldModifier = Modifier.fillMaxWidth(fraction = 0.9f)
-        Text(
-            text = "Cadastrar-se",
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
-        OutlinedTextField(
-            value = name,
-            label = { Text(text = "Digite seu nome") },
-            modifier = fieldModifier,
-            onValueChange = { name = it }
-        )
-        OutlinedTextField(
-            value = email,
-            label = { Text(text = "Digite seu e-mail") },
-            modifier = fieldModifier,
-            onValueChange = { email = it }
-        )
-        OutlinedTextField(
-            value = password,
-            label = { Text(text = "Digite sua senha") },
-            modifier = fieldModifier,
-            onValueChange = { password = it },
-            visualTransformation = PasswordVisualTransformation()
-        )
-        OutlinedTextField(
-            value = confirmPassword,
-            label = { Text(text = "Confirme sua senha") },
-            modifier = fieldModifier,
-            onValueChange = { confirmPassword = it },
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Row(
-            modifier = Modifier.padding(top = 12.dp),
-            horizontalArrangement = Arrangement.Center
+        Column(
+            modifier = modifier.padding(24.dp).fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Text(
+                text = "WeatherApp",
+                fontSize = 24.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = name,
+                label = { Text(text = "Digite seu nome") },
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = { name = it }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = email,
+                label = { Text(text = "Digite seu e-mail") },
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = { email = it }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = password,
+                label = { Text(text = "Digite sua senha") },
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = { password = it },
+                visualTransformation = PasswordVisualTransformation()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = confirmPassword,
+                label = { Text(text = "Confirme sua senha") },
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = { confirmPassword = it },
+                visualTransformation = PasswordVisualTransformation()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    onClick = {
+                        Toast.makeText(activity, "Cadastro concluido!", Toast.LENGTH_LONG).show()
+                        activity.finish()
+                    },
+                    enabled = (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && name.isNotEmpty()
+                            && password == confirmPassword
+                            ),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Cadastrar")
+                }
+                Spacer(modifier = Modifier.size(16.dp))
+                Button(
+                    onClick = { email = ""; password = ""; confirmPassword = ""; name = ""},
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Limpar")
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HorizontalDivider(modifier = Modifier.weight(1f))
+                Text(text = "ou",
+                    modifier = Modifier.padding(horizontal = 8.dp))
+                HorizontalDivider(modifier = Modifier.weight(1f))
+            }
+            Spacer(modifier = Modifier.height(16.dp))
             Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    Toast.makeText(activity, "Cadastro concluido!", Toast.LENGTH_LONG).show()
-                    activity.finish()
-                },
-                enabled = (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && name.isNotEmpty()
-                        && password == confirmPassword
-                        ),
-                modifier = Modifier.weight(1f)
+                    activity.startActivity(Intent(activity, LoginActivity::class.java).setFlags(FLAG_ACTIVITY_SINGLE_TOP))
+                }
             ) {
-                Text("Concluir")
+                Text("Já Possuo Conta")
             }
-            Spacer(modifier = Modifier.size(12.dp))
-            Button(
-                onClick = { email = ""; password = ""; confirmPassword = ""; name = ""},
-                modifier = Modifier.weight(1f)
-            ) {
-                Text("Limpar")
-            }
-        }
-        HorizontalDivider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 12.dp))
-        Button(
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Green, contentColor = Color.White),
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                activity.startActivity(Intent(activity, LoginActivity::class.java).setFlags(FLAG_ACTIVITY_SINGLE_TOP))
-            }
-        ) {
-            Text("Entrar")
         }
     }
 }
