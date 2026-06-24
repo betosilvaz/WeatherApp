@@ -44,10 +44,14 @@ fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             .padding(8.dp)
     ) {
         items(items = cityList, key = { it.name } ) { city ->
-            CityItem(city = city, weather = viewModel.weather(city.name), onClose = { viewModel.remove(city) }, onClick = {
-                Toast.makeText(activity, "On Click", Toast.LENGTH_LONG).show()
-                activity.startActivity(Intent(activity, MainActivity::class.java).setFlags(FLAG_ACTIVITY_SINGLE_TOP))
-            })
+            CityItem(
+                city = city,
+                weather = viewModel.weather(city.name),
+                onClose = { viewModel.remove(city) },
+                onClick = {
+                    viewModel.city = city.name
+                }
+            )
         }
     }
 }
