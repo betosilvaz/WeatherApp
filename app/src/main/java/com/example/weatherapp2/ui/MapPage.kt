@@ -47,7 +47,7 @@ fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     }
 
     GoogleMap (modifier = Modifier.fillMaxSize(), onMapClick = {
-        viewModel.add("Cidade@${it.latitude}:${it.longitude}", location = it) }, cameraPositionState = camPosState,
+        viewModel.addCity(it) }, cameraPositionState = camPosState,
         properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
         uiSettings = MapUiSettings(myLocationButtonEnabled = true)
     ) {
