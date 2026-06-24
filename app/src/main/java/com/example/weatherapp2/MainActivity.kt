@@ -38,6 +38,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,7 +93,7 @@ class MainActivity : ComponentActivity() {
                             BottomNavItem.ListButton,
                             BottomNavItem.MapButton,
                         )
-                        BottomNavBar(navController = navController, items)
+                        BottomNavBar(viewModel, navController, items)
                     },
                     floatingActionButton = {
                         if (showButton) {
@@ -102,9 +103,21 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { innerPadding ->
+                    launcher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        launcher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
                         MainNavHost(navController = navController, viewModel = viewModel)
+                    }
+                    LaunchedEffect(viewModel.page) {
+                        navController.navigate(viewModel.page) {
+                        // Volta pilha de navegação até HomePage (startDest).
+                            navController.graph.startDestinationRoute?.let {
+                                popUpTo(it) {
+                                    saveState = true
+                                }
+                                restoreState = true
+                            }
+                            launchSingleTop = true
+                        }
                     }
                 }
             }

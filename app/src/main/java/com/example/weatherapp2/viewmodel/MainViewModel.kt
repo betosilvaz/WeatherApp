@@ -17,6 +17,7 @@ import com.example.weatherapp2.model.City
 import com.example.weatherapp2.model.Forecast
 import com.example.weatherapp2.model.User
 import com.example.weatherapp2.model.Weather
+import com.example.weatherapp2.ui.nav.Route
 import com.google.android.gms.maps.model.LatLng
 
 class MainViewModel (private val db: FBDatabase, private val service : WeatherService): ViewModel(),
@@ -36,6 +37,10 @@ class MainViewModel (private val db: FBDatabase, private val service : WeatherSe
     var city: String?
         get() = _city.value
         set(tmp) { _city.value = tmp }
+    private var _page = mutableStateOf<Route>(Route.Home)
+    var page: Route
+        get() = _page.value
+        set(tmp) { _page.value = tmp }
 
     fun remove(city: City) {
         db.remove(city.toFBCity())
